@@ -1,12 +1,11 @@
 package com.example.androidforegroundservice;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidforegroundservice.databinding.ActivityMainBinding;
 
@@ -23,22 +22,14 @@ public class MainActivity extends AppCompatActivity {
         binding.btnStartService.setOnClickListener(view -> {
             if (!isMyServiceRunning(MyForeGroundService.class)){
                 foreGroundServiceIntent.setAction("start");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    startForegroundService(foreGroundServiceIntent);
-                }else {
-                    startService(foreGroundServiceIntent);
-                }
+                startForegroundService(foreGroundServiceIntent);
             }
         });
 
         binding.btnStopService.setOnClickListener(view -> {
             if (isMyServiceRunning(MyForeGroundService.class)){
                 foreGroundServiceIntent.setAction("stop");
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                    startForegroundService(foreGroundServiceIntent);
-                }else {
-                    startService(foreGroundServiceIntent);
-                }
+                startForegroundService(foreGroundServiceIntent);
             }
         });
     }

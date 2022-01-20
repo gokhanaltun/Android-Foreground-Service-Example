@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
@@ -51,29 +50,26 @@ public class MyForeGroundService extends Service {
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.design_foreground_service_notification);
         remoteViews.setOnClickPendingIntent(R.id.btn_notification_stop_service, stopServicePendingIntent);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        String channel_id = "id1";
+        String channel_name = "name1";
+        String channel_description = "description1";
+        int notification_priority = NotificationManager.IMPORTANCE_NONE;
 
-            String channel_id = "id1";
-            String channel_name = "name1";
-            String channel_description = "description1";
-            int notification_priority = NotificationManager.IMPORTANCE_NONE;
+        NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channel_id);
 
-            NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channel_id);
-
-            if (notificationChannel == null) {
-                notificationChannel = new NotificationChannel(channel_id, channel_name, notification_priority);
-                notificationChannel.setDescription(channel_description);
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channel_id);
-            builder.setSmallIcon(R.drawable.ic_service);
-            builder.setStyle(new NotificationCompat.DecoratedCustomViewStyle());
-            builder.setAutoCancel(true);
-            builder.setCustomContentView(remoteViews);
-            builder.setContentIntent(mainActivityPendingIntent);
-            builder.build();
-            startForeground(1, builder.build());
+        if (notificationChannel == null) {
+            notificationChannel = new NotificationChannel(channel_id, channel_name, notification_priority);
+            notificationChannel.setDescription(channel_description);
+            notificationManager.createNotificationChannel(notificationChannel);
         }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channel_id);
+        builder.setSmallIcon(R.drawable.ic_service);
+        builder.setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+        builder.setAutoCancel(true);
+        builder.setCustomContentView(remoteViews);
+        builder.setContentIntent(mainActivityPendingIntent);
+        builder.build();
+        startForeground(1, builder.build());
     }
 }
